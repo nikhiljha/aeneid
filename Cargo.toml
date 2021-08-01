@@ -1,6 +1,6 @@
 [package]
 name = "aeneid"
-version = "0.5.0"
+version = "0.6.0"
 authors = ["Nikhil Jha <mail@nikhiljha.com>"]
 edition = "2018"
 description = "use GitHub as a free, zero-ops Identity Provider"

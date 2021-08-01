@@ -15,11 +15,21 @@ GitHub's "teams" feature is basically a free, zero-ops [IdP](https://en.wikipedi
 
 Install aeneid with your favorite package manager...
 
-**cargo**: `cargo install aeneid`
+**cargo**: `cargo install aeneid --root /usr/local/bin` (important: ~/.cargo won't work, specify --root)
 
 ## Configuration
 
-The configuration lives in `/etc/aeneid/config.toml`. If it doesn't exist, create it based on the `config.toml` in this repository. All fields should have comments explaining what they do.
+**Automatic Configuration**
+
+If you installed from a non-cargo package manager, everything should be automatically configured. Just add credentials to `/etc/aeneid/config.toml`.
+
+If you're on Linux and installed from cargo, you can run `sudo aeneid --init init`, and then add credentials to `/etc/aeneid/config.toml`.
+
+If none of the above apply to you, see the manual configuration instructions below.
+
+**Manual Configuration**
+
+The configuration lives in `/etc/aeneid/config.toml`. If it doesn't exist, create it based on the `src/config.toml` in this repository. All fields should have comments explaining what they do.
 
 You'll also need to set `AuthorizedKeysCommand /path/to/bin/aeneid` and `AuthorizedKeysCommandRunAs aeneid` in your sshd_config (typically `/etc/ssh/sshd_config`) so that OpenSSH knows where to get keys from.
 

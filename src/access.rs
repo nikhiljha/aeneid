@@ -1,14 +1,12 @@
 use std::collections::HashMap;
 
-use crate::Config;
+use regex::Regex;
+
+use crate::config::Config;
 
 /// Verifies that the GitHub user with a given username belongs to a given team
 /// within a given org.
 pub(crate) fn check_allowed(username: &str, config: Config) -> bool {
-    if config.overrides.contains(&*username) {
-        return true;
-    }
-
     // TODO: performance: (optionally) cache network requests
     match (config.team, config.org, config.token) {
         (Some(team), Some(org), Some(token)) => {
@@ -33,7 +31,10 @@ fn check_allowed_network(
             org, team, username
         ))
         .header("Authorization", format!("token {}", token))
-        .header("User-Agent", "aeneid / 0.5.0")
+        .header(
+            "User-Agent",
+            format!("aeneid / {}", env!("CARGO_PKG_VERSION")),
+        )
         .send()?
         .json::<HashMap<String, String>>()?;
 
@@ -41,4 +42,30 @@ fn check_allowed_network(
         None => Ok(false),
         Some(state) => Ok(state.eq("active")),
     }
+}
+
+/// Validates a unix username, and if valid, returns the corresponding GitHub
+/// username.
+///
+/// People with numbers in their GitHub username must login with
+/// _githubUsername. Everyone else can just login with githubUsername.
+///
+/// This is required for the following reasons...
+/// 1. Unix usernames may not start with a number, but GitHub usernames may.
+/// 2. GitHub usernames may not contain an underscore, but Unix usernames may.
+pub fn unix_to_github(unix: &str) -> Result<String, Box<dyn std::error::Error>> {
+    let prefixed = Regex::new(r"^_[a-zA-Z0-9]*$").unwrap();
+    let normal = Regex::new(r"^[a-zA-Z][a-zA-Z0-9]*$").unwrap();
+
+    assert!(unix.is_ascii());
+    if unix.len() > 0 {
+        if prefixed.is_match(&*unix) {
+            return Ok(unix[1..].to_string().to_ascii_lowercase());
+        }
+        if normal.is_match(&*unix) {
+            return Ok(unix.to_ascii_lowercase());
+        }
+    }
+
+    Err("invalid username".into())
 }

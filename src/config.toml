@@ -1,5 +1,5 @@
 # Don't touch this, aeneid will attempt to upgrade configurations automatically.
-cfg_version = 1
+cfg_version = 2
 
 # If team *AND* org *AND* token are set, aeneid will use the token to make sure that an SSH
 # user is in a given GitHub team. If the user is not in the GitHub team, aeneid will not return their
@@ -10,4 +10,5 @@ cfg_version = 1
 # token = "generate_me_with_read:org_permissions" # optional, https://github.com/settings/tokens
 
 # Any user listed in overrides will always be allowed to access this machine.
-overrides = ["nikhiljha"]
+# The format is {unix username = github username}. Duplicates will cause undefined behavior.
+overrides = {} # required but can be empty, example: {njha = "nikhiljha", torvalds = "torvalds"}
