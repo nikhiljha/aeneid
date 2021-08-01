@@ -1,5 +1,8 @@
 # aeneid
 
+<img src="https://user-images.githubusercontent.com/2773700/127755383-955cdd1f-8f8a-4c9a-b6a0-8203729ce4b8.png" align="right"
+     alt="aeneid-meme" width="300" height="300">
+     
 GitHub's "teams" feature is basically a free, zero-ops [IdP](https://en.wikipedia.org/wiki/Identity_provider). Let's use it to authenticate to OpenSSH! You _probably_ shouldn't use this in production, but I can't stop you.
 
 ## What / How?
