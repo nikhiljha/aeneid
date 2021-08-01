@@ -13,7 +13,9 @@ GitHub's "teams" feature is basically a free, zero-ops [IdP](https://en.wikipedi
 
 ## Installation
 
-Install aeneid with your favorite package manager. Since I released this project 0 minutes ago, it's not available as a package yet. Check back later for packages, or compile it yourself (`cargo build --release` then copy the binary to `/usr/local/bin` or something).
+Install aeneid with your favorite package manager...
+
+**cargo**: `cargo install aeneid`
 
 ## Configuration
 
