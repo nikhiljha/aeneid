@@ -3,6 +3,13 @@ name = "aeneid"
 version = "0.5.0"
 authors = ["Nikhil Jha <mail@nikhiljha.com>"]
 edition = "2018"
+description = "use GitHub as a free, zero-ops Identity Provider"
+readme = "README.md"
+homepage = "https://nikhiljha.com/projects/"
+repository = "https://github.com/nikhiljha/aeneid"
+license = "GPL-3.0-only"
+keywords = ["github", "openssh"]
+categories = ["authentication"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
