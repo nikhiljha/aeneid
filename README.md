@@ -13,23 +13,21 @@ GitHub's "teams" feature is basically a free, zero-ops [IdP](https://en.wikipedi
 
 ## Installation
 
-Install aeneid with your favorite package manager...
+Install aeneid with your usual package manager. If that's not possible, you can use cargo.
 
-**cargo**: `cargo install aeneid --root /usr/local/bin` (important: ~/.cargo won't work, specify --root)
+**cargo** (not recommended, see FAQ): `cargo install aeneid && cp $(whereis aeneid | cut -f 2 -d " ") /usr/local/bin && cargo uninstall aeneid && sudo /usr/local/bin/aeneid --init init`
 
 ## Configuration
 
 **Automatic Configuration**
 
-If you installed from a non-cargo package manager, everything should be automatically configured. Just add credentials to `/etc/aeneid/config.toml`.
-
-If you're on Linux and installed from cargo, you can run `sudo aeneid --init init`, and then add credentials to `/etc/aeneid/config.toml`.
-
-If none of the above apply to you, see the manual configuration instructions below.
+If you used one of the commands in the installation section, everything should be automatically configured. Just add credentials to `/etc/aeneid/config.toml`.
 
 **Manual Configuration**
 
-The configuration lives in `/etc/aeneid/config.toml`. If it doesn't exist, create it based on the `src/config.toml` in this repository. All fields should have comments explaining what they do.
+Create a new unix user called `aeneid` and place the binary somewhere that both the new user and the sshd user can read / execute. Make sure the `aeneid` user (and ONLY the aeneid user) can read / write / execute in `/etc/aeneid`.
+
+The configuration lives in `/etc/aeneid/config.toml`. If it doesn't exist, create it based on the `src/config.toml` in this repository. All fields have comments explaining what they do.
 
 You'll also need to set `AuthorizedKeysCommand /path/to/bin/aeneid` and `AuthorizedKeysCommandRunAs aeneid` in your sshd_config (typically `/etc/ssh/sshd_config`) so that OpenSSH knows where to get keys from.
 
@@ -58,8 +56,14 @@ I've thought about security a little, but not nearly as much as I'd like. **I do
 
 **Why did you make this?**
 
-I **really** didn't want to set up LDAP. I **really really** didn't want to set up LDAP. I **really really really really really really** didn't want to set up LDAP. In the end I set up LDAP, so hopefully this is useful to someone else.
+- I **really** didn't want to set up LDAP. I **really really** didn't want to set up LDAP. I **really really really really really really** didn't want to set up LDAP. In the end I set up LDAP, so hopefully this is useful to someone else.
 
 **What's with the name?**
 
-I thought it was silly. You're accepting a present (free, zero-ops IdP), but in the process, GitHub *could* silently swap out the public keys it returns and authenticate to your machines. So if you squint: trojan horse.
+- I thought it was silly. You're accepting a present (free, zero-ops IdP), but in the process, GitHub *could* silently swap out the public keys it returns and authenticate to your machines. So if you squint: trojan horse.
+
+**Why is `cargo install` not recommended?**
+
+- Cargo is not recommended because 1) rustup users will have the binary installed in a place not accessible by the sshd 2) config files will be created by the `aeneid --init` script instead of your global package manager.
+
+- The `--init` script is pretty smart (it's idempotent), but has only been tested on a handful of common linux distros. It's highly unlikely to work anywhere else.
