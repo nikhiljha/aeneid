@@ -1,0 +1,13 @@
+# Don't touch this, aeneid will attempt to upgrade configurations automatically.
+cfg_version = 1
+
+# If team *AND* org *AND* token are set, aeneid will use the token to make sure that an SSH
+# user is in a given GitHub team. If the user is not in the GitHub team, aeneid will not return their
+# SSH keys.
+# If any of the below are unset, aeneid will only return keys for explicitly overridden users.
+# org = "example" # optional, https://github.com/organizations/new
+# team = "ssh-people" # optional, https://github.com/orgs/<orgname>/teams
+# token = "generate_me_with_read:org_permissions" # optional, https://github.com/settings/tokens
+
+# Any user listed in overrides will always be allowed to access this machine.
+overrides = ["nikhiljha"]

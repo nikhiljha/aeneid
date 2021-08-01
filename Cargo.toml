@@ -1,0 +1,15 @@
+[package]
+name = "aeneid"
+version = "0.5.0"
+authors = ["Nikhil Jha <mail@nikhiljha.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+reqwest = { version = "0.11.4", features = ["blocking", "json", "rustls-tls"], default-features = false }
+clap = "3.0.0-beta.2"
+regex = "1.4.5"
+toml = "0.5.8"
+serde_derive = "1.0.127"
+serde = "1.0.127"
