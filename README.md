@@ -3,13 +3,14 @@
 <img src="https://user-images.githubusercontent.com/2773700/127755383-955cdd1f-8f8a-4c9a-b6a0-8203729ce4b8.png" align="right"
      alt="aeneid-meme" width="300" height="300">
      
-GitHub's "teams" feature is basically a free, zero-ops [IdP](https://en.wikipedia.org/wiki/Identity_provider). Let's use it to authenticate to OpenSSH! You _probably_ shouldn't use this in production, but I can't stop you.
+If you squint, GitHub is basically a free, zero-ops [IdP](https://en.wikipedia.org/wiki/Identity_provider) that provides SSH public keys. Let's use it to authenticate to OpenSSH!
 
 ## What / How?
 
-1. GitHub provides an API to ensure that a given user is in a given team within a given org. GitHub also provides an endpoint (`/username.keys`) to retrieve someone's SSH keys.
-2. OpenSSHd provides a way to execute an arbitrary binary before user login, and then reads its stdout to grab SSH public keys. Failing that, it falls back to `authorized_keys`. Learn more by running `man sshd_config`.
-3. Glue them together and you get this project.
+There are two ways to use `aeneid`. You can configure both methods at once.
+
+1. You set a list of `{unix_username = "github_username"}` pairs in the `overrides` section of `/etc/aeneid.toml`. These users will be able to login with the SSH keys they have saved on their GitHub account.
+2. You create a GitHub organization, with a team inside it that has some members. You configure `/etc/aeneid.toml` with an API key. As long as these users remain in the organization and team, they'll be able to login to OpenSSH via public key.
 
 ## Installation
 
