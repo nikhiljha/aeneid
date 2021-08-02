@@ -15,13 +15,19 @@ GitHub's "teams" feature is basically a free, zero-ops [IdP](https://en.wikipedi
 
 Install aeneid with your usual package manager. If that's not possible, you can use cargo.
 
-**cargo** (not recommended, see FAQ): `cargo install aeneid && cp $(whereis aeneid | cut -f 2 -d " ") /usr/local/bin && cargo uninstall aeneid && sudo /usr/local/bin/aeneid --init init`
+**deb** (Debian, Ubuntu, etc): [download from GitHub releases](https://github.com/nikhiljha/aeneid/releases) then `dpkg -i /path/to/aeneid.deb`
+
+**rpm** (Fedora, RHEL, etc): [download from GitHub releases](https://github.com/nikhiljha/aeneid/releases) then `rpm -i /path/to/aeneid.rpm`
+
+**nix** (NixOS, etc): coming soon (TM)...
+
+**cargo** (not recommended, see FAQ): `cargo install aeneid && cp $(whereis aeneid | cut -f 2 -d " ") /usr/local/bin && cargo uninstall aeneid && sudo /usr/local/bin/aeneid --init`
 
 ## Configuration
 
 **Automatic Configuration**
 
-If you used one of the commands in the installation section, everything should be automatically configured. Just add credentials to `/etc/aeneid/config.toml`.
+If you used one of the commands in the installation section, everything should be automatically configured. Just add credentials (and/or overrides) to `/etc/aeneid/config.toml`, and then run `sudo aeneid --init` to automatically configure your sshd. If you'd rather manually configure your sshd, see the paragraph about sshd in the manual configuration section.
 
 **Manual Configuration**
 
@@ -33,11 +39,12 @@ You'll also need to set `AuthorizedKeysCommand /path/to/bin/aeneid` and `Authori
 
 ## Usage
 
-If your GitHub username starts with a number, prefix your username with an `_` to login. Otherwise, your username is your GitHub username. See the `unix_to_github` function in `main.rs` for more information.
+If you specified a unix username in `overrides`, use that username. If you're using GitHub teams, and your username starts with a number, prefix your username with an `_` to login. Otherwise, your username is your GitHub username. See the `unix_to_github` function in `main.rs` for more information.
 
-Automatically creating users is currently unsupported, you'll need to create the corresponding user manually before logging in (`adduser username`).
+Automatically creating users is currently unsupported, you'll need to create the corresponding user manually before first login (`adduser username`).
 
 ```bash
+$ # make sure ssh is setup with your GitHub keys, then...
 $ ssh username@example.com # that's it
 ```
 

@@ -12,8 +12,12 @@ fn main() {
         .version(env!("CARGO_PKG_VERSION"))
         .author("Nikhil Jha <mail@nikhiljha.com>")
         .about("authenticate SSH users with their GitHub authorized_keys")
-        .arg("-i, --init 'initialize aeneid'")
-        .arg("<username> 'a unix username'")
+        .arg("-i, --init 'Initializes aeneid'")
+        .arg(clap::Arg::new("username")
+            .conflicts_with("init")
+            .required(true)
+            .about("a unix username")
+        )
         .get_matches();
 
     if args.is_present("init") {

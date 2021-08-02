@@ -73,7 +73,7 @@ pub(crate) fn init() {
     if !cmd_configured.is_match(&*contents) && !user_configured.is_match(&*contents) {
         file.write(
             format!(
-                "AuthorizedKeysCommand {}\nAuthorizedKeysCommandUser aeneid",
+                "\nAuthorizedKeysCommand {}\nAuthorizedKeysCommandUser aeneid\n",
                 std::env::current_exe()
                     .expect("get executable")
                     .to_str()

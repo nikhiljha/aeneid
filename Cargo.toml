@@ -1,6 +1,6 @@
 [package]
 name = "aeneid"
-version = "0.6.0"
+version = "0.6.1"
 authors = ["Nikhil Jha <mail@nikhiljha.com>"]
 edition = "2018"
 description = "use GitHub as a free, zero-ops Identity Provider"
@@ -11,7 +11,30 @@ license = "GPL-3.0-only"
 keywords = ["github", "openssh"]
 categories = ["authentication"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[package.metadata.deb]
+maintainer = "Nikhil Jha <mail@nikhiljha.com>"
+copyright = "2021, Nikhil Jha <mail@nikhiljha.com>"
+extended-description = """\
+Use GitHub as a free, zero-ops Identity Provider \
+by using github authorized_keys for your sshd."""
+maintainer-scripts = "pkg/deb/"
+conf-files = ["etc/aeneid/config.toml"]
+assets = [
+    ["target/release/aeneid", "usr/bin/", "755"],
+    ["README.md", "usr/share/doc/aeneid/README", "644"],
+    ["src/config.toml", "etc/aeneid/config.toml", "700"],
+]
+
+[package.metadata.rpm]
+package = "aeneid"
+config = "pkg/rpm"
+files = {"../../src/config.toml" = {path = "/etc/aeneid/config.toml"}}
+
+[package.metadata.rpm.cargo]
+buildflags = ["--release"]
+
+[package.metadata.rpm.targets]
+aeneid = { path = "/usr/bin/aeneid" }
 
 [dependencies]
 reqwest = { version = "0.11.4", features = ["blocking", "json", "rustls-tls"], default-features = false }
@@ -20,3 +43,4 @@ regex = "1.4.5"
 toml = "0.5.8"
 serde_derive = "1.0.127"
 serde = "1.0.127"
+

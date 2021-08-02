@@ -1,0 +1,34 @@
+# adapted from PostgreSQL postgresql-common.postinst
+if [ "$1" = configure ]; then
+    # Make sure the administrative user exists
+    if ! getent passwd aeneid > /dev/null; then
+        adduser --system $quiet --home /etc/aeneid --no-create-home \
+            --shell /bin/bash --group --gecos "aeneid user" aeneid
+    fi
+    # if the user was created manually, make sure the group is there as well
+    if ! getent group aeneid > /dev/null; then
+        addgroup --system $quiet aeneid
+    fi
+    # make sure aeneid is in the aeneid group
+    if ! id -Gn aeneid | grep -qw aeneid; then
+        adduser $quiet aeneid aeneid
+    fi
+
+    # check validity of aeneid user and group
+    if [ "`id -u aeneid`" -eq 0 ]; then
+        echo "The aeneid system user must not have uid 0 (root).
+Please fix this and reinstall this package." >&2
+        exit 1
+    fi
+    if [ "`id -g aeneid`" -eq 0 ]; then
+        echo "The aeneid system user must not have root as primary group.
+Please fix this and reinstall this package." >&2
+        exit 1
+    fi
+
+    # ensure config directory ownership
+    mkdir -p /etc/aeneid
+    su -s /bin/sh aeneid -c "test -O /etc/aeneid &&
+            test -G /etc/aeneid" || \
+        chown -R aeneid:aeneid /etc/aeneid
+fi
