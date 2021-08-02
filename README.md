@@ -28,7 +28,7 @@ Install aeneid with your usual package manager. If that's not possible, you can 
 
 **Automatic Configuration**
 
-If you used one of the commands in the installation section, everything should be automatically configured. Just add credentials (and/or overrides) to `/etc/aeneid/config.toml`, and then run `sudo aeneid --init` to automatically configure your sshd. If you'd rather manually configure your sshd, see the paragraph about sshd in the manual configuration section.
+If you used a non-cargo package manager, everything should be automatically configured. Just add credentials (and/or overrides) to `/etc/aeneid/config.toml`, and then run `sudo aeneid --init` to automatically configure your sshd. If you'd rather manually configure your sshd, see the paragraph about sshd in the manual configuration section.
 
 **Manual Configuration**
 
